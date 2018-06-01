@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:58:34 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/01 17:41:19 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/01 18:09:13 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
+# define WIN_X 500
+# define WIN_Y 500
+# define WIN_TITLE "fdf"
+
 typedef struct		s_point
 {
 	int				x;
@@ -27,5 +31,11 @@ typedef struct		s_point
 	int				z;
 	int				end;
 }					t_point;
+
+typedef struct		s_mlx
+{
+	void			*mlx;
+	void			*win;
+}					t_mlx;
 
 #endif

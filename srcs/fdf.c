@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:57:57 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/01 17:52:07 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/01 18:09:31 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,17 +114,27 @@ t_point		*reader(char *filename)
 	return (tab);
 }
 
+int		new_window(t_mlx *data)
+{
+	if (!(data->mlx = mlx_init()))
+		return (0);
+	data->win = mlx_new_window(data->mlx, WIN_X, WIN_Y, WIN_TITLE);
+	return (1);
+}
+
 int		main(int argc, char **argv)
 {
 	t_point		*tab;
+	t_mlx		data;
 
 	if (argc == 2)
 	{
 		if ((tab = reader(argv[1])) == NULL)
 			return (-1);
 		ft_printcoords(tab);
+		new_window(&data);
+		mlx_loop(data.mlx);
 		free(tab);
 	}
-	while (1);
 	return (1);
 }
