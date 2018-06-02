@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:57:57 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/01 18:09:31 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/02 21:35:48 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,42 @@ t_point		*reader(char *filename)
 	return (tab);
 }
 
+int		ft_key(int key, t_mlx *data)
+{
+	int x = 0;
+	static int y = 0;
+	(void)key;
+	while (1)
+	{
+		printf("put_pixel[%d][%d]\n", x, y);
+		mlx_pixel_put(data->mlx, data->win, x, y, 0255);
+		if (x == 250)
+		{
+			y++;
+			break;
+		}
+		x++;
+	}
+	return (0);
+}
+
 int		new_window(t_mlx *data)
 {
 	if (!(data->mlx = mlx_init()))
 		return (0);
 	data->win = mlx_new_window(data->mlx, WIN_X, WIN_Y, WIN_TITLE);
 	return (1);
+}
+
+void	display_tab(void *mlx, void *win, t_point *tab)
+{
+	int		pos = 0;
+	while (!tab[pos].end)
+	{
+//		if (tab[pos].z > 0)
+			mlx_pixel_put(mlx, win, tab[pos].x, tab[pos].y, 0255);
+		pos++;
+	}
 }
 
 int		main(int argc, char **argv)
@@ -131,8 +161,9 @@ int		main(int argc, char **argv)
 	{
 		if ((tab = reader(argv[1])) == NULL)
 			return (-1);
-		ft_printcoords(tab);
 		new_window(&data);
+		display_tab(data.mlx, data.win, tab);
+		mlx_key_hook(data.win, ft_key, &data);
 		mlx_loop(data.mlx);
 		free(tab);
 	}
