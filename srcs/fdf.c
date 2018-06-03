@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:57:57 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/02 21:35:48 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/03 12:23:47 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,11 +118,16 @@ int		ft_key(int key, t_mlx *data)
 {
 	int x = 0;
 	static int y = 0;
-	(void)key;
+	if (key == 53)
+	{
+		ft_putendl("ESC key pressed, exiting.");
+		exit(1);
+	}
 	while (1)
 	{
 		printf("put_pixel[%d][%d]\n", x, y);
-		mlx_pixel_put(data->mlx, data->win, x, y, 0255);
+		printf("key: %d\n", key);
+		mlx_pixel_put(data->mlx, data->win, x + 250, y + 250, 0255);
 		if (x == 250)
 		{
 			y++;
@@ -141,13 +146,29 @@ int		new_window(t_mlx *data)
 	return (1);
 }
 
-void	display_tab(void *mlx, void *win, t_point *tab)
+void	display_tab(t_mlx data, t_point *tab)
 {
 	int		pos = 0;
+	int		zoom_x = ZOOM;
+	int		zoom_y = ZOOM;
+	int		start = 5;
 	while (!tab[pos].end)
 	{
-//		if (tab[pos].z > 0)
-			mlx_pixel_put(mlx, win, tab[pos].x, tab[pos].y, 0255);
+		if (tab[pos].z > 0)
+		{
+			mlx_pixel_put(data.mlx, data.win, tab[pos].x + zoom_x, tab[pos].y + zoom_y, 0250250250);
+			printf("put_pixel[%d][%d]\n", tab[pos].x + zoom_x, tab[pos].y + zoom_y);
+		}
+		else
+			mlx_pixel_put(data.mlx, data.win, tab[pos].x + zoom_x, tab[pos].y + zoom_y, 0666);
+		if (tab[pos].y != tab[pos + 1].y)
+		{
+			printf("IN\n");
+			zoom_x = ZOOM + start;
+			zoom_y = zoom_y + (ZOOM / 2) + start;
+		}
+		else
+			zoom_x = zoom_x + (ZOOM / 2) + start;
 		pos++;
 	}
 }
@@ -162,10 +183,10 @@ int		main(int argc, char **argv)
 		if ((tab = reader(argv[1])) == NULL)
 			return (-1);
 		new_window(&data);
-		display_tab(data.mlx, data.win, tab);
+		display_tab(data, tab);
 		mlx_key_hook(data.win, ft_key, &data);
-		mlx_loop(data.mlx);
 		free(tab);
+		mlx_loop(data.mlx);
 	}
 	return (1);
 }

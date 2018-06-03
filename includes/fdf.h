@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:58:34 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/01 18:09:13 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/03 12:24:08 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
-# define WIN_X 500
-# define WIN_Y 500
+# define WIN_X 1000
+# define WIN_Y 1000
 # define WIN_TITLE "fdf"
+# define ZOOM 50
 
 typedef struct		s_point
 {
