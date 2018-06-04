@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:57:57 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/03 12:23:47 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/04 22:39:34 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,26 +114,28 @@ t_point		*reader(char *filename)
 	return (tab);
 }
 
+void	display_tab(t_mlx data);
+
 int		ft_key(int key, t_mlx *data)
 {
-	int x = 0;
-	static int y = 0;
-	if (key == 53)
+	void	*image_ptr;
+	printf("key: %d\n", key);
+	if (key == 126)
+	{
+		image_ptr = mlx_new_image(data->mlx, WIN_X, WIN_Y);
+		data->cam.zoom += 1;
+		mlx_put_image_to_window(data->mlx, data->win, image_ptr, 0, 0);
+		display_tab(*data);
+	}
+	else if (key == 125 && data->cam.zoom > 0)
+	{
+		data->cam.zoom -= 1;
+		display_tab(*data);
+	}
+	else if (key == 53)
 	{
 		ft_putendl("ESC key pressed, exiting.");
 		exit(1);
-	}
-	while (1)
-	{
-		printf("put_pixel[%d][%d]\n", x, y);
-		printf("key: %d\n", key);
-		mlx_pixel_put(data->mlx, data->win, x + 250, y + 250, 0255);
-		if (x == 250)
-		{
-			y++;
-			break;
-		}
-		x++;
 	}
 	return (0);
 }
@@ -146,46 +148,59 @@ int		new_window(t_mlx *data)
 	return (1);
 }
 
-void	display_tab(t_mlx data, t_point *tab)
+t_point *tab_resize(t_point *tab, int zoom)
+{
+	int		i;
+	int		zoom_x;
+	int		zoom_y;
+
+	zoom_x = zoom;
+	zoom_y = zoom;
+	i = 0;
+	while (!tab[i].end)
+	{
+		tab[i].x += zoom_x;
+		tab[i].y += zoom_y;
+		if (tab[i].y - zoom_y != tab[i + 1].y)
+		{
+			zoom_x = zoom;
+			zoom_y += (zoom / 2);
+		}
+		else
+			zoom_x += (zoom /2);
+		i++;
+	}
+	return (tab);
+}
+
+void	display_tab(t_mlx data)
 {
 	int		pos = 0;
-	int		zoom_x = ZOOM;
-	int		zoom_y = ZOOM;
-	int		start = 5;
-	while (!tab[pos].end)
+	printf("cam_zoom: %d\n", data.cam.zoom);
+	data.tab = tab_resize(data.tab, data.cam.zoom);
+	while (!data.tab[pos].end)
 	{
-		if (tab[pos].z > 0)
-		{
-			mlx_pixel_put(data.mlx, data.win, tab[pos].x + zoom_x, tab[pos].y + zoom_y, 0250250250);
-			printf("put_pixel[%d][%d]\n", tab[pos].x + zoom_x, tab[pos].y + zoom_y);
-		}
+		if (data.tab[pos].z > 0)
+			mlx_pixel_put(data.mlx, data.win, data.tab[pos].x, data.tab[pos].y, 0250250250);
 		else
-			mlx_pixel_put(data.mlx, data.win, tab[pos].x + zoom_x, tab[pos].y + zoom_y, 0666);
-		if (tab[pos].y != tab[pos + 1].y)
-		{
-			printf("IN\n");
-			zoom_x = ZOOM + start;
-			zoom_y = zoom_y + (ZOOM / 2) + start;
-		}
-		else
-			zoom_x = zoom_x + (ZOOM / 2) + start;
+			mlx_pixel_put(data.mlx, data.win, data.tab[pos].x, data.tab[pos].y, 0666);
 		pos++;
 	}
 }
 
 int		main(int argc, char **argv)
 {
-	t_point		*tab;
 	t_mlx		data;
 
 	if (argc == 2)
 	{
-		if ((tab = reader(argv[1])) == NULL)
+		if ((data.tab = reader(argv[1])) == NULL)
 			return (-1);
+		data.cam.zoom = 10;
 		new_window(&data);
-		display_tab(data, tab);
+		display_tab(data);
 		mlx_key_hook(data.win, ft_key, &data);
-		free(tab);
+		free(data.tab);
 		mlx_loop(data.mlx);
 	}
 	return (1);

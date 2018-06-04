@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:58:34 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/03 12:24:08 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/04 22:00:39 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # define WIN_X 1000
 # define WIN_Y 1000
 # define WIN_TITLE "fdf"
-# define ZOOM 50
 
 typedef struct		s_point
 {
@@ -33,10 +32,17 @@ typedef struct		s_point
 	int				end;
 }					t_point;
 
+typedef struct		s_cam
+{
+	int				zoom;
+}					t_cam;
+
 typedef struct		s_mlx
 {
 	void			*mlx;
 	void			*win;
+	t_point			*tab;
+	t_cam			cam;
 }					t_mlx;
 
 #endif
