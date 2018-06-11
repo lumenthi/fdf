@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:58:34 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/07 19:10:21 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/11 15:04:31 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,26 @@
 # include <stdlib.h>
 # include <math.h>
 
-# define ROTATE_LEFT 123
-# define ROTATE_UP 126
-# define ROTATE_RIGHT 124
-# define ROTATE_DOWN 125
-# define ZOOM 69
-# define UNZOOM 78
+# define ROTATE_LEFT 0
+# define ROTATE_UP 13
+# define ROTATE_RIGHT 2
+# define ROTATE_DOWN 1
+
+# define LEFT 123
+# define UP 126
+# define RIGHT 124
+# define DOWN 125
+
+# define SPEED 20
+
+# define RESET 36
+
+# define PERSP_P 6
+# define PERSP_M 7
+
+# define ZOOM 14
+# define UNZOOM 12
+
 # define ESC 53
 
 # define WIN_X 700
@@ -57,8 +71,14 @@ typedef struct		s_image
 
 typedef struct		s_cam
 {
+	int				start;
 	int				zoom;
-	int				zoomed;
+	int				zoom_z;
+	int				x_rot;
+	int				y_rot;
+	int				x_pos;
+	int				y_pos;
+	int				reset;
 }					t_cam;
 
 typedef struct		s_prop
@@ -68,6 +88,20 @@ typedef struct		s_prop
 	int				max_z;
 	int				size;
 }					t_prop;
+
+typedef struct		s_draw
+{
+	int				x0;
+	int				y0;
+	int				x1;
+	int				y1;
+	int				dx;
+	int				dy;
+	int				sx;
+	int				sy;
+	int				err;
+	int				e2;
+}					t_draw;
 
 typedef struct		s_mlx
 {
