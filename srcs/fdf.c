@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:57:57 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/14 20:51:16 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/15 13:56:01 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,18 +156,38 @@ int		reader(char *filename, t_mlx *data)
 	return (1);
 }
 
-t_point	to_isometric(t_point tab)
+t_point	rotate_x(t_point tab, float v, t_point ref)
 {
-	int	u;
-	int	v;
+	int	y;
 
-//	u = tab.x * cos(0) + tab.y * cos(120) + tab.z * cos
-	u = (tab.x + tab.z)/sqrt(2);
-	v = (tab.x + 2 * tab.y - tab.z)/sqrt(6);
-//	tab.u = tab.x;
-//	tab.v = tab.y;
-	tab.u = u;
-	tab.v = v;
+	y = tab.y;
+	if (v != 0)
+	{
+		tab.y = cos(v) * (tab.y - ref.y) - sin(v) * (tab.z - ref.z) + ref.y;
+		tab.z = sin(v) * (y - ref.y) + cos(v) * (tab.z - ref.z) + ref.z;
+	}
+	return (tab);
+}
+
+t_point	rotate_y(t_point tab, float v, t_point ref)
+{
+	int	x;
+
+	x = tab.x;
+	if (v != 0)
+	{
+		tab.x = cos(v) * (tab.x - ref.x) + sin(v) * (tab.z - ref.z) + ref.x;
+		tab.z = cos(v) * (tab.z - ref.z) - sin(v) * (x - ref.x) + ref.z;
+	}
+	return (tab);
+}
+
+t_point	to_isometric(t_point tab, t_mlx data, t_point ref)
+{
+	tab = rotate_x(tab, ROTATION * data.cam.x_rot, ref);
+	tab = rotate_y(tab, ROTATION * data.cam.y_rot, ref);
+	tab.u = (tab.x + tab.z)/sqrt(2);
+	tab.v = (tab.x + 2 * tab.y - tab.z)/sqrt(6);
 	return (tab);
 }
 
@@ -260,26 +280,6 @@ void	draw_lines(t_mlx data)
 	}
 }
 
-t_point	rotate_x(t_point tab, float v, t_point ref)
-{
-	if (v != 0)
-	{
-		tab.y = cos(v) * (tab.y - ref.y) - sin(v) * (tab.z - ref.z) + ref.y;
-		tab.z = sin(v) * (tab.y - ref.y) + cos(v) * (tab.z - ref.z) + ref.z;
-	}
-	return (tab);
-}
-
-t_point	rotate_y(t_point tab, float v, t_point ref)
-{
-	if (v != 0)
-	{
-		tab.x = cos(v) * (tab.x - ref.x) + sin(v) * (tab.z - ref.z) + ref.x;
-		tab.z = cos(v) * (tab.z - ref.z) - sin(v) * (tab.x - ref.x) + ref.z;
-	}
-	return (tab);
-}
-
 t_point		move_u(t_point tab, int pos)
 {
 	if (pos != 0)
@@ -318,7 +318,8 @@ void	apply_modif(t_mlx *data)
 	t_point ref;
 
 	i = 0;
-//	ref = data->tab[0];
+	tab_zoom(data, data->prop.size / 2);
+	ref = data->tab[data->prop.size / 2];
 	while (i < data->prop.size)
 	{
 		if (data->cam.reset == 1)
@@ -326,11 +327,9 @@ void	apply_modif(t_mlx *data)
 			*data = get_zoom(*data);
 			data->cam.reset = 0;
 		}
-		tab_zoom(data, i);
-		ref = data->tab[data->prop.size / 2];
-		data->tab[i] = rotate_x(data->tab[i], ROTATION * data->cam.x_rot, ref);
-		data->tab[i] = rotate_y(data->tab[i], ROTATION * data->cam.y_rot, ref);
-		data->tab[i] = to_isometric(data->tab[i]);
+		if (i != data->prop.size / 2)
+			tab_zoom(data, i);
+		data->tab[i] = to_isometric(data->tab[i], *data, ref);
 		data->tab[i] = move_u(data->tab[i], SPEED * data->cam.x_pos);
 		data->tab[i] = move_v(data->tab[i], SPEED * data->cam.y_pos);
 		i++;
