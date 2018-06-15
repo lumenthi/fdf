@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:58:34 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/11 15:04:31 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/14 20:43:45 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@
 # define PERSP_P 6
 # define PERSP_M 7
 
-# define ZOOM 14
-# define UNZOOM 12
+# define ZOOM 4
+# define UNZOOM 5
 
 # define ESC 53
 
@@ -58,6 +58,7 @@ typedef struct		s_point
 	int				v;
 	int				z;
 	int				b_z;
+	int				color;
 }					t_point;
 
 typedef struct		s_image
