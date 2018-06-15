@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:57:57 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/15 13:56:01 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/15 18:31:44 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,36 @@ void	ft_printcoords(t_mlx data)
 	printf("data->max_z: %d\n", data.prop.max_z);
 }
 
+int		hex_to_int(char *hexVal)
+{
+	int	base;
+	int	ret;
+	int	i;
+
+	ret = 0;
+	base = 1;
+	i = ft_strlen(hexVal) - 1;
+	while (i >= 0)
+	{
+		if (hexVal[i]>='0' && hexVal[i]<='9')
+		{
+			ret += (hexVal[i] - 48)*base;
+			base = base * 16;
+		}
+		else if (hexVal[i]>='A' && hexVal[i]<='F')
+		{
+			ret += (hexVal[i] - 55)*base;
+			base = base*16;
+		}
+		i--;
+	}
+	return (ret);
+}
+
 void	fill_value(t_mlx *data, char *str, int x, int y, int size)
 {
 	char	*found;
 
-	if ((found = ft_strchr(str, ',')))
-	{
-		if (ft_strlen(found) > 1)
-		{
-			found++;
-			data->tab[size].color = ft_atoi(found); //replace with atoi_base
-		}
-	}
-	else
-		data->tab[size].color = 0;
 	data->tab[size].x = x;
 	data->tab[size].y = y;
 	data->tab[size].z = ft_atoi(str);
@@ -59,6 +75,22 @@ void	fill_value(t_mlx *data, char *str, int x, int y, int size)
 		data->prop.max_y = y;
 	if (data->tab[size].z > data->prop.max_z)
 		data->prop.max_z = data->tab[size].z;
+	if ((found = ft_strchr(str, ',')))
+	{
+		if (ft_strlen(found) > 1)
+		{
+			found++;
+			printf("found: %s\n", found);
+			data->tab[size].color = hex_to_int(found); //replace with atoi_base
+		}
+	}
+	else
+	{
+		if (data->tab[size].z > 0)
+			data->tab[size].color = DFLT_PERSP;
+		else
+			data->tab[size].color = DFLT_BASE;
+	}
 }
 
 void	get_tab(int fd, t_mlx *data, int tab_size)
@@ -233,16 +265,11 @@ void	just_draw(t_point tab0, t_point tab1, t_mlx data)
 	d.err = d.dx-d.dy;
 	while (!(d.x0==d.x1 && d.y0==d.y1))
 	{
-		if (tab0.b_z > 0 || tab1.b_z > 0)
-		{
-			color = mlx_get_color_value(data.mlx, 250500);
-			add_pixel(data.img.data, d.x0, d.y0, color, data.img.bpp);
-		}
+		if (tab0.b_z > tab1.b_z)
+			color = mlx_get_color_value(data.mlx, tab0.color);
 		else
-		{
-			color = mlx_get_color_value(data.mlx, 100250100);
-			add_pixel(data.img.data, d.x0, d.y0, color, data.img.bpp);
-		}
+			color = mlx_get_color_value(data.mlx, tab1.color);
+		add_pixel(data.img.data, d.x0, d.y0, color, data.img.bpp);
 		d.e2 = 2*d.err;
 		if (d.e2 > -d.dy)
 		{
@@ -280,15 +307,17 @@ void	draw_lines(t_mlx data)
 	}
 }
 
-t_point		move_u(t_point tab, int pos)
+t_point		move_u(t_point tab, int pos, t_mlx data)
 {
+	(void)data;
 	if (pos != 0)
 		tab.u += pos;
 	return (tab);
 }
 
-t_point		move_v(t_point tab, int pos)
+t_point		move_v(t_point tab, int pos, t_mlx data)
 {
+	(void)data;
 	if (pos != 0)
 		tab.v += pos;
 	return (tab);
@@ -303,7 +332,7 @@ t_mlx	get_zoom(t_mlx data)
 	else
 		max = data.prop.max_y;
 	data.cam.start = WIN_X / 6;
-	data.cam.zoom = (WIN_X - data.cam.start) / max;
+	data.cam.zoom = (WIN_X) / max;
 	data.cam.zoom_z = data.cam.zoom;
 	data.cam.x_rot = 0;
 	data.cam.y_rot = 0;
@@ -326,12 +355,14 @@ void	apply_modif(t_mlx *data)
 		{
 			*data = get_zoom(*data);
 			data->cam.reset = 0;
+			tab_zoom(data, data->prop.size / 2);
+			ref = data->tab[data->prop.size / 2];
 		}
 		if (i != data->prop.size / 2)
 			tab_zoom(data, i);
 		data->tab[i] = to_isometric(data->tab[i], *data, ref);
-		data->tab[i] = move_u(data->tab[i], SPEED * data->cam.x_pos);
-		data->tab[i] = move_v(data->tab[i], SPEED * data->cam.y_pos);
+		data->tab[i] = move_u(data->tab[i], SPEED * data->cam.x_pos, *data);
+		data->tab[i] = move_v(data->tab[i], SPEED * data->cam.y_pos, *data);
 		i++;
 	}
 }
@@ -457,8 +488,10 @@ int		main(int argc, char **argv)
 	{
 		if (!reader(argv[1], &data))
 			return (-1);
-		ft_printcoords(data);
+		printf("end_read\n");
+//		ft_printcoords(data);
 		data = get_zoom(data);
+		printf("zoom: %d\n", data.cam.zoom);
 		new_window(&data);
 		display_tab(&data);
 		mlx_key_hook(data.win, ft_key, &data);

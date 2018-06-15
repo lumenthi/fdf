@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:58:34 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/14 20:43:45 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/06/15 18:42:29 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,15 @@
 # define ROTATE_RIGHT 2
 # define ROTATE_DOWN 1
 
+# define SPEED 20
+
 # define LEFT 123
 # define UP 126
 # define RIGHT 124
 # define DOWN 125
 
-# define SPEED 20
+# define DFLT_BASE 0xffffff
+# define DFLT_PERSP 0x9e001f
 
 # define RESET 36
 
