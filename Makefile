@@ -6,14 +6,14 @@
 #    By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/22 14:06:43 by lumenthi          #+#    #+#              #
-#    Updated: 2018/05/31 17:58:23 by lumenthi         ###   ########.fr        #
+#    Updated: 2018/06/20 18:52:19 by lumenthi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf
 
 CC = gcc
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra
 MLX_FLAGS = -L ./minilibx/ -l mlx -framework OpenGL -framework Appkit
 
 LIBDIR = libft
@@ -27,7 +27,14 @@ MLX = $(MLXDIR)/libmlx.a
 LIBFT = $(LIBDIR)/libft.a
 LIBFT_OBJ = $(LIBDIR)/objs
 
-SRCS = fdf.c
+SRCS = fdf.c \
+		tools.c \
+		reader.c \
+		reader2.c \
+		actions.c \
+		actions2.c \
+		draw.c \
+		init.c
 
 SOURCES = $(addprefix $(SRCDIR)/, $(SRCS))
 INCLUDES = $(addprefix -I, $(INCDIR))
