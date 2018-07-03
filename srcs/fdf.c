@@ -6,7 +6,7 @@
 /*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:57:57 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/20 18:50:07 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/07/03 19:04:05 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,6 @@ void	apply_modif(t_mlx *d)
 
 void	display_tab(t_mlx *data)
 {
-	int		pos;
-
-	pos = 0;
 	clear_screen(data);
 	apply_modif(data);
 	draw_lines(*data);
