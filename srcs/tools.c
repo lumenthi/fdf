@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lumenthi <lumenthi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 17:56:39 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/20 18:06:59 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/11/15 11:18:14 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
-int		hex_to_int(char *hexVal)
+int		hex_to_int(char *hexval)
 {
 	int	base;
 	int	ret;
@@ -20,15 +20,15 @@ int		hex_to_int(char *hexVal)
 
 	ret = 0;
 	base = 1;
-	i = ft_strlen(hexVal) - 1;
+	i = ft_strlen(hexval) - 1;
 	while (i >= 0)
 	{
-		if (hexVal[i] >= '0' && hexVal[i] <= '9')
-			ret += (hexVal[i] - 48) * base;
-		else if (hexVal[i] >= 'a' && hexVal[i] <= 'f')
-			ret += (hexVal[i] - 87) * base;
-		else if (hexVal[i] >= 'A' && hexVal[i] <= 'F')
-			ret += (hexVal[i] - 55) * base;
+		if (hexval[i] >= '0' && hexval[i] <= '9')
+			ret += (hexval[i] - 48) * base;
+		else if (hexval[i] >= 'a' && hexval[i] <= 'f')
+			ret += (hexval[i] - 87) * base;
+		else if (hexval[i] >= 'A' && hexval[i] <= 'F')
+			ret += (hexval[i] - 55) * base;
 		base = base * 16;
 		i--;
 	}

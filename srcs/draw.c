@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lumenthi <lumenthi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:45:21 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/20 18:47:46 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/11/15 11:17:56 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static t_draw	draw_init(t_point tab0, t_point tab1)
 	d.x1 = tab1.u;
 	d.y0 = tab0.v;
 	d.y1 = tab1.v;
-	d.dx = abs(d.x1-d.x0);
-	d.dy = abs(d.y1-d.y0);
+	d.dx = abs(d.x1 - d.x0);
+	d.dy = abs(d.y1 - d.y0);
 	d.sx = 0;
 	d.sy = 0;
 	d.err = 0;
@@ -34,7 +34,7 @@ static t_draw	draw_init(t_point tab0, t_point tab1)
 		d.sy = 1;
 	else
 		d.sy = -1;
-	d.err = d.dx-d.dy;
+	d.err = d.dx - d.dy;
 	return (d);
 }
 
@@ -63,7 +63,7 @@ static int		draw_color(t_point tab0, t_point tab1, t_mlx data)
 	return (color);
 }
 
-static void	just_draw(t_point tab0, t_point tab1, t_mlx data)
+static void		just_draw(t_point tab0, t_point tab1, t_mlx data)
 {
 	t_draw	d;
 	int		color;
@@ -87,7 +87,7 @@ static void	just_draw(t_point tab0, t_point tab1, t_mlx data)
 	}
 }
 
-void	draw_lines(t_mlx data)
+void			draw_lines(t_mlx data)
 {
 	int		pos;
 	t_point	t_p;

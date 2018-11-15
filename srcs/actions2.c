@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lumenthi <lumenthi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:38:04 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/20 18:39:25 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/11/15 11:14:25 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ t_point	to_isometric(t_point tab, t_mlx data, t_point ref)
 {
 	tab = rotate_x(tab, ROTATION * data.cam.x_rot, ref);
 	tab = rotate_y(tab, ROTATION * data.cam.y_rot, ref);
-	tab.u = (tab.x + tab.z)/sqrt(2);
-	tab.v = (tab.x + 2 * tab.y - tab.z)/sqrt(6);
+	tab.u = (tab.x + tab.z) / sqrt(2);
+	tab.v = (tab.x + 2 * tab.y - tab.z) / sqrt(6);
 	return (tab);
 }
 

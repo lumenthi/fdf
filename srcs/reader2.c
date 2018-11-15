@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reader2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lumenthi <lumenthi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:11:26 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/20 18:13:02 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/11/15 11:17:02 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int		invalid_value(char *str)
 	}
 	return (0);
 }
-
 
 int		fill_value(t_mlx *data, char *str, t_nrm n)
 {

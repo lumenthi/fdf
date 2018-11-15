@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lumenthi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lumenthi <lumenthi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 18:21:20 by lumenthi          #+#    #+#             */
-/*   Updated: 2018/06/20 18:37:11 by lumenthi         ###   ########.fr       */
+/*   Updated: 2018/11/15 11:13:56 by lumenthi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ t_point		move_v(t_point tab, int pos)
 	return (tab);
 }
 
-int		increment(int *i)
+int			increment(int *i)
 {
 	*i = 1;
 	return (1);
 }
 
-void	actions2(int key, t_mlx *data, int *i)
+void		actions2(int key, t_mlx *data, int *i)
 {
 	if (key == ZOOM && increment(i))
 		data->cam.zoom += 1;
@@ -49,7 +49,7 @@ void	actions2(int key, t_mlx *data, int *i)
 		data->cam.reset = 1;
 }
 
-int		actions(int key, t_mlx *data)
+int			actions(int key, t_mlx *data)
 {
 	int i;
 
